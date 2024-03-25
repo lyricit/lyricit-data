@@ -53,7 +53,7 @@ class Crawl:
         pd.DataFrame(
             {"track_id": track_ids, "title": titles, "artist": artists}
         ).to_csv(
-            f"{data_path}/melon_chart_{year}_{month}_{date}.csv",
+            f"{data_path}/melon_chart.csv",
             index=False,
             encoding="utf-8-sig",
         )
