@@ -1,6 +1,7 @@
 """
 search data from elastic search
 """
+import sys
 import os
 import json
 import csv
@@ -9,7 +10,7 @@ from elasticsearch import Elasticsearch, helpers
 import certifi
 import pprint
 
-class ElasticAPI:
+class ElasticAPI(BaseElasticSearchClient):
     """
     Elastic search, insert API
     """
@@ -108,5 +109,7 @@ class ElasticAPI:
                 jsonfile.write(str(line)+ "\n")
 
 if __name__ == "__main__":
+
+    
     print(ElasticAPI.data_isin(["k87335", "m30829858", "m5742256", "test"]))
     
