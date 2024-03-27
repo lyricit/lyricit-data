@@ -17,7 +17,7 @@ class ElasticAPI:
     ES_HOST = os.environ.get("ELASTIC_HOST")
     ES_PORT = os.environ.get("ELASTIC_PORT")
     client = Elasticsearch(
-        f"http://{ES_HOST}:{ES_PORT}"       
+        f"http://{ES_HOST}:{ES_PORT}"
     )
     index_name = "tracks"
     @classmethod
