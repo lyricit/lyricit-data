@@ -28,18 +28,17 @@ class Crawl:
             + "Chrome/109.0.0.0 Safari/537.36"
         }
 
-        url = "https://www.melon.com/chart/day/index.htm"
+        url = "https://www.melon.com/genre/song_list.htm?gnrCode=GN0100"
 
         response = requests.get(url, headers=headers, timeout=10)
 
         soup = bs(response.text, "lxml")
-        get_time = soup.find_all("span", attrs={"class": "year"})[0].get_text()
-        year, month, date = get_time.split(".")
+        
 
         # song ids
-        track_tags = soup.find_all("tr")
+        track_tags = soup.find_all("input", attrs={"class": "input_check"})
         track_ids = [
-            int(track_tag["data-song-no"].strip()) for track_tag in track_tags[1:]
+            int(track_tag["value"].strip()) for track_tag in track_tags[1:]
         ]
 
         # title ids
@@ -53,7 +52,7 @@ class Crawl:
         pd.DataFrame(
             {"code": track_ids, "title": titles, "artist": artists}
         ).to_csv(
-            f"{data_path}/melon/melon_chart.csv",
+            f"{data_path}/melon/melon_genre_chart.csv",
             index=False,
             encoding="utf-8-sig",
         )
