@@ -1,16 +1,15 @@
 """
 search data from elastic search
 """
-import sys
 import os
 import json
 import csv
 from dotenv import load_dotenv
-from elasticsearch import Elasticsearch, helpers
+from elastic import Elasticsearch, helpers
 import certifi
 import pprint
 
-class ElasticAPI(BaseElasticSearchClient):
+class ElasticAPI:
     """
     Elastic search, insert API
     """
@@ -109,7 +108,4 @@ class ElasticAPI(BaseElasticSearchClient):
                 jsonfile.write(str(line)+ "\n")
 
 if __name__ == "__main__":
-
-    
     print(ElasticAPI.data_isin(["k87335", "m30829858", "m5742256", "test"]))
-    
