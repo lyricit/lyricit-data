@@ -80,6 +80,6 @@
 # - SPARK_BEELINE_OPTS, to set config properties only for the beeline cli (e.g. "-Dx=y")
 # - SPARK_BEELINE_MEMORY, Memory for beeline (e.g. 1000M, 2G) (Default: 1G)
 export SPARK_MASTER_WEBUI_PORT=8080
-export SPARK_WORKER_INSTANCES=2
+export SPARK_WORKER_INSTANCES=3
 export SPARK_WORKER_MEMORY=2g
 export SPARK_MASTER_HOST=sparkrunner
