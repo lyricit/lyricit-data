@@ -281,3 +281,5 @@ $RECYCLE.BIN/
 
 data/
 *.csv
+
+spotify_token.json
