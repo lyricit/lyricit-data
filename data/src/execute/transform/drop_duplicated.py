@@ -2,14 +2,14 @@
 find not inserted data from es
 """
 import pandas as pd
-from track_elastic_search import ElasticAPI
+from util.elastic.elastic_search import ElasticSearchAPI
 
 def delete_duplicated() -> None:
     """
     delete duplicated data
     """
     df_melon = pd.read_csv("data/melon/melon_chart.csv")
-    in_data = ElasticAPI.data_isin(["m"+str(i) for i in df_melon["code"]])
+    in_data = ElasticSearchAPI.search_by_code(["m"+str(i) for i in df_melon["code"]])
     in_dataset = []
     
     for i in in_data:
