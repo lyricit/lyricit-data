@@ -67,7 +67,7 @@ class ElasticSearchAPI :
         """
         response = self.es.search(
             index = self.ELASTIC_INDEX_NAME,
-            body = {"query" : {"terms" : "code" : list}, "size" : 100}
+            body = {"query" : {"terms" : {"code" : list}, "size" : 100}}
         )
         self.logger.info(f"Search completed with list : {list}")
 
@@ -99,7 +99,7 @@ class ElasticSearchAPI :
         return document
 
 
-    def bulk_data(self, chapter ,total_data : list) -> None: 
+    def bulk_data(self, chapter:int ,total_data : list) -> None: 
         """
         한꺼번에 insert 할 데이터를 만들고, ElasticSearch에 bulk 합니다.
         """
@@ -130,5 +130,5 @@ class ElasticSearchAPI :
             err_lineno = exc_tb.tb_lineno
             self.logger.error(f"ERROR || {err_lineno}")
 
-        self.logger.info(f"Done bulk data.")
+        self.logger.info(f"Done bulk data Chapter '{chapter}' !!! ")
 
