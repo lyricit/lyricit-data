@@ -13,7 +13,6 @@ from pyspark.sql.functions import col, udf
 nltk.download("punkt")
 
 
-
 class Tokenizer:
     """
     Tokenizer class

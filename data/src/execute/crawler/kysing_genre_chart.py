@@ -4,21 +4,24 @@ kysing crawler
 get kysing chart by genre track ids, artist names, track titles
 """
 
-import sys
+import sys, os
 
 import requests
 from bs4 import BeautifulSoup
 
+from dotenv import load_dotenv
+from util.tools.logger import Logger
 
 # File Location 
-DATA_PATH = "./data/kysing/"
+load_dotenv()
+data_path = os.getenv('DATA_PATH')
 header = ["index", "song_number","title","artist","lyrics","composer","written","release_date"]
 
 
 def crawl_genre(genre_num : int) : 
     import csv
     
-    f = open(DATA_PATH + f"kysing_chart_genre{genre_num}_data.csv", "w", encoding = "utf-8-sig")
+    f = open(data_path + f"kysing_chart_genre{genre_num}_data.csv", "w", encoding = "utf-8-sig")
     writer = csv.writer(f)
     writer.writerow(header)
 
@@ -60,10 +63,10 @@ def crawl_genre(genre_num : int) :
             song_composer = chart.find("li", class_ = "popular_chart_cmp").text.strip()
             song_written = chart.find("li", class_= "popular_chart_wrt").text.strip()
             song_release = chart.find("li", class_ = "popular_chart_rel").text
-            print(f'[{chart_rank}/100] ({song_number}) {song_title} - {song_artist}')
+            
+            logger.info(f'[{chart_rank}/100] ({song_number}) {song_title} - {song_artist}')
             writer.writerow([chart_rank, song_number,song_title, song_artist, song_lyrics, song_composer, song_written, song_release])
             
-        
     f.close() # csv 종료
 
 def processing_lyric(lyric : str) -> str :
@@ -73,6 +76,8 @@ def processing_lyric(lyric : str) -> str :
         
 if __name__ == "__main__" :
     
+    logger = Logger().get_logger()
+
     GENRE_CNT = 9
     for genre_num in range(GENRE_CNT) : 
         if genre_num == 7 : continue # 외국 노래 인기곡

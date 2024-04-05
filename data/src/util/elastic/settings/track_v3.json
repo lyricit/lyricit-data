@@ -1,0 +1,122 @@
+{
+    "settings" : {
+        "analysis" : {
+            "analyzer" : {
+                "artist_analyzer" : {
+                    "tokenizer" : "slash_tokenizer",
+                    "char_filter" : ["remove_brackets_filter"],
+                    "filter" : ["lowercase", "remove_whitespace_filter", "artist_synonyms_filter"]
+                },
+                "title_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "slash_tokenizer",
+                    "char_filter" : ["remove_brackets_filter"],
+                    "filter" : ["lowercase", "remove_whitespace_filter"]
+                },
+                "lyrics_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "nori_tokenizer",
+                    "char_filter" : ["html_strip"],
+                    "filter" : ["lowercase", "remove_whitespace_special_filter", "lyrics_synonyms_filter", "nori_stoptags_filter", "nori_stopwords_filter"]
+                },
+                "ngram_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "ngram_tokenizer",
+                    "char_filter" : ["html_strip", "remove_whitespace_filter", "remove_english"],
+                    "filter" : ["lowercase", "remove_whitespace_special_filter"]
+                }
+            },
+            "tokenizer" : {
+                "slash_tokenizer" : {
+                    "type" : "pattern",
+                    "pattern" : "/"
+                },
+                "ngram_tokenizer" : {
+                    "type" : "ngram",
+                    "min_gram": 3,
+                    "max_gram": 3                }
+            },
+            "char_filter" : {
+                "remove_brackets_filter" : {
+                    "type" : "pattern_replace",
+                    "pattern" : "[\\(\\)]",
+                    "replacement" : "/"
+                },
+                "remove_whitespace_filter" : {
+                    "type" : "pattern_replace",
+                    "pattern" :  "\\s+",
+                    "replacement" : ""
+                },
+                "remove_english" : {
+                    "type" : "pattern_replace",
+                    "pattern" : "[A-Za-z]+",
+                    "replacement" : ""
+                }
+            }
+            ,
+            "filter" : {
+                "remove_whitespace_filter" : {
+                    "type" : "pattern_replace",
+                    "pattern" : "\\s+",
+                    "replacement" : ""
+                },
+                "remove_whitespace_special_filter" : {
+                    "type" : "pattern_replace",
+                    "pattern" :  "[^\\p{L}\\p{N}\\s]+",
+                    "replacement" : ""
+                },
+                "artist_synonyms_filter" : {
+                    "type" : "synonym",
+                    "synonyms_path" : "dict/artist_synonyms.txt"
+                },
+                "lyrics_synonyms_filter" : {
+                    "type" : "synonym",
+                    "synonyms_path" : "dict/lyrics_synonyms.txt"
+                },
+                "nori_stoptags_filter" : {
+                    "type" : "nori_part_of_speech",
+                    "stoptags" : ["E", "IC", "J", "MAG", "MAJ", "MM", "SP", "SSC", "SSO", "SC", "SE", "XPN", "XSA", "XSN", "XSV", "UNA", "NA", "VSV"]
+                },
+                "nori_stopwords_filter" : {
+                    "type" : "stop",
+                    "stopwords" : ["것"]
+                }
+            }
+        }
+    },
+    "mappings" : {
+        "properties" : {
+            "code" : {"type" : "keyword"},
+            "title" : {
+                "type" : "text",
+                "analyzer" : "title_analyzer"
+            },
+            "artist" : {
+                "type" : "text",
+                "analyzer" : "artist_analyzer"
+            },
+            "spotify_info" : {
+                "type" : "object",
+                "properties" : {
+                    "id" : {"type" : "keyword"},
+                    "title" : {"type" : "text"},
+                    "artist" : {"type" : "keyword"},
+                    "preview_play_url" : {"type" : "text"},
+                    "album_url" : {"type" : "object"},
+                    "popularity" : {"type" : "integer"}
+                }
+            },
+            "lyrics" : {
+                "type" : "text",
+                "analyzer" : "lyrics_analyzer",
+                "fielddata" : true,
+                "fields" : {
+                    "ngram" : {
+                        "type" : "text",
+                        "analyzer" : "ngram_analyzer"
+                    }
+                }
+            }
+        }
+    }
+}

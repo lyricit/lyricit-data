@@ -5,12 +5,17 @@ get today's melon chart track ids, artist names, track titles
 
 """
 
-import sys
+import sys, os
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
 
+from dotenv import load_dotenv
+
+# File Location 
+load_dotenv()
+data_path = os.getenv('DATA_PATH')
 
 class Crawl:
     """
