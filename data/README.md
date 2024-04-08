@@ -127,6 +127,10 @@
 
 <br>
 
+<img src="./assets/data_architecture.png" width = "800" alt = "data_architecture">
+
+<br>
+
 ---
 
 ## 🏠 Service Layout
